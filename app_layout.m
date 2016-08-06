@@ -54,10 +54,9 @@ function app_layout_OpeningFcn(hObject, eventdata, handles, varargin)
 %            command line (see VARARGIN)
 
 handles.call_break=5;
-
 % Choose default command line output for app_layout
 handles.output = hObject;
-
+set(handles.text4,'String','Press Measure to Start');
 % Update handles structure
 guidata(hObject, handles);
 
@@ -94,9 +93,12 @@ function msr_btn_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.call_break=0;
 guidata(hObject,handles);
-for i=1:1000
-    set(handles.text4,'String',num2str(i));
-    disp(handles.call_break);
+clear ard;
+ard=arduino('COM3','Mega2560');
+while(true)
+    redval = readVoltage(ard,'A1');
+    volt_str=sprintf('%.2f V',redval*2);
+    set(handles.text4,'String',volt_str);
     pause(1);
     handles=guidata(hObject);
     if(handles.call_break==1)
