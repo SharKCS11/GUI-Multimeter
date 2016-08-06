@@ -6,3 +6,8 @@ Updates will be posted below, and this page will be replaced by a full README wh
 <h5> 2 August, 2016 </h2>
 - Added initial code from Arduino IDE.
 - Added circuit diagram
+
+<h5> 6 August, 2016 </h2>
+- Created a GUI in Matlab with start/stop button to use as counter.
+- Adapted the voltage-measuring function from Arduino IDE to Matlab.
+- Will merge this code later.
