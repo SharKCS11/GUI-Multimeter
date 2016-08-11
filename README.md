@@ -14,3 +14,8 @@ Updates will be posted below, and this page will be replaced by a full README wh
 <h5> 7 August, 2016 </h5>
 - Combined the voltage measuring function from 'voltm.m' into the app code in 'app_layout.m'.
 - Voltmeter finished in debug mode: will try to run it through Matlab compiler later.
+
+<h5> 11 August, 2016 </h6>
+- Tweaked the circuit to make the wires a bit tidier: no change in sketch.
+- Tried (and failed) to compile matlab GUI to executable.
+- Uploaded screenshots of current view of app in three different circuit states.
