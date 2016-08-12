@@ -19,3 +19,9 @@ Updates will be posted below, and this page will be replaced by a full README wh
 - Tweaked the circuit to make the wires a bit tidier: no change in sketch.
 - Tried (and failed) to compile matlab GUI to executable.
 - Uploaded screenshots of current view of app in three different circuit states.
+
+<h5> 12 August, 2016 </h6>
+- Began testing Arduino interfacing with Ruby. Instructions to run this test:
+    First, install the "firmata" gem and arduino sketch using the instructions here: http://playground.arduino.cc/Interfacing/Ruby
+    Next, download the file "Ruby Multimeter Testing.rb" and run it. The program should automatically detect your Arduino and connect to it.
+- Current version is for command line only. Planning to add a GUI to it using Gosu.
