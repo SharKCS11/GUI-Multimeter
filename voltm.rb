@@ -1,5 +1,6 @@
- require 'rubygems'
  require 'gosu'
+ require 'arduino_firmata'
+
 
  module Zorder
  	Background, Buttons, Text = *0..2;
@@ -20,6 +21,11 @@
  		needs_cursor=true;
  		super(720,480);
  		self.caption = "Voltmeter test";
+
+ 		print "Connecting..."
+ 		@ard = ArduinoFirmata.connect
+ 		puts "Connection successful: Firmata version #{@ard.version}"
+
  	end
 
  	def update
@@ -80,8 +86,9 @@
  			@font_medium.draw(stopped_str,210,290,
  				              Zorder::Text,1,1,0xff_00FF44); 		
  		else
- 			val=rand(1000);
- 			@font_medium.draw("#{val} V",320,290,
+ 			val = @ard.analog_read 1;
+    		val = val * (5.0/1024.0) * 2;
+ 			@font_medium.draw("#{val.round(2)} V",320,290,
  				              Zorder::Text,1,1,0xff_00FF44);
  			sleep(0.5);
  		end
