@@ -25,3 +25,7 @@ Updates will be posted below, and this page will be replaced by a full README wh
     First, install the "firmata" gem and arduino sketch using the instructions here: http://playground.arduino.cc/Interfacing/Ruby
     Next, download the file "Ruby Multimeter Testing.rb" and run it. The program should automatically detect your Arduino and connect to it.
 - Current version is for command line only. Planning to add a GUI to it using Gosu.
+
+<h5> 16 August, 2016 </h6>
+- Finished a GUI prototype using Gosu. File has been added to the repository.
+- Still some problems with timing and update cycles with the GUI. Once those are fixed, the command line voltmeter will be ready to be merged with the GUI.
