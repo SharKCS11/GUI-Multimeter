@@ -18,6 +18,8 @@
  		@font_medium=Gosu::Font.new(45,{:name => "Lato Medium"})
  		@font_small=Gosu::Font.new(36,{:name => "Ubuntu"});
  		@measuring = false;
+ 		@counter=0;
+ 		@val = 0.00;
  		needs_cursor=true;
  		super(720,480);
  		self.caption = "Voltmeter test";
@@ -33,9 +35,17 @@
  		@msx=mouse_x;
  		@msy=mouse_y;
  		@measuring = true if measure_clicked?
- 		@measuring = false if stop_clicked?
- 		@first_draw = 1 if stop_clicked?
- 		if @measuring then @redr=true else @redr=false end;
+ 		if stop_clicked?
+ 			@measuring=false;
+ 			@first_draw=1;
+ 			@counter=0;
+ 		end
+ 		if @measuring
+ 			@redr=true
+ 			@counter = (@counter + 1)%30;
+ 		else
+ 			@redr=false 
+ 		end;
  	end
 
  	def measure_clicked?
@@ -57,14 +67,14 @@
  	end
 
  	def needs_cursor?
- 		true;
+ 		true
  	end
 
  	def needs_redraw?
  		if @first_draw==1
- 			return true;
+ 			return true
  		else
- 			return @redr;
+ 			return @redr
  		end
  	end
 
@@ -86,11 +96,14 @@
  			@font_medium.draw(stopped_str,210,290,
  				              Zorder::Text,1,1,0xff_00FF44); 		
  		else
- 			val = @ard.analog_read 1;
-    		val = val * (5.0/1024.0) * 2;
- 			@font_medium.draw("#{val.round(2)} V",320,290,
+ 			if(@counter==0)
+ 				@val = @ard.analog_read 1;
+    			@val = @val * (5.0/1024.0) * 2;
+    		end
+    		val_str=sprintf("%.2f",@val);
+ 			@font_medium.draw("#{val_str} V",320,290,
  				              Zorder::Text,1,1,0xff_00FF44);
- 			sleep(0.5);
+ 			# sleep(0.5);
  		end
  		@first_draw=0;
  	end
