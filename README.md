@@ -36,3 +36,7 @@ Updates will be posted below, and this page will be replaced by a full README wh
     2. The Arduino's measurement cycles at 2 Hz are interfering with the GUI update cycles at 60 Hz. The plan to fix it is to keep both the updates at 60 Hz but create a timer so that the Arduino will only make a measurement every half-second.
 - To run the Voltmeter GUI:
     First, install the "firmata" gem and run "standard firmata" through the Arduino IDE. Instructions here: http://playground.arduino.cc/Interfacing/Ruby . Then download the file "voltm.rb" and run it on command line. Press "Measure" to start measuring and *hold down* the stop button to stop measurement. This is because the GUI can only detect a mouse click every half-second due to the problem mentioned above. I'll be working to fix this shortly.
+
+<h5> 22 August, 2016 </h5>
+- Fixed "stop" button, and fixed firmata bugs: Arduino always connects now, and stop button always works (no need to hold it down anymore).
+- Updates are back to 60 Hz: still trying to figure out a better way to solve that problem than using sleep(). Voltmeter is completely functional now. Set up the circuit, and run it using the instructions above. Adding an ammeter should now be a relatively trivial task.
