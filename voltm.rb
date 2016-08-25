@@ -8,7 +8,10 @@
 
  class MeterWindow < Gosu::Window
  	def initialize
- 		puts Zorder::Background
+ 		
+ 		@@single_resistor = 1200 # The resistance of ONE resistor in the voltage divider
+
+ 		@@unit_mode_strings=["Volts","Amps"];
  		@first_draw=1;
  		@width_wrapper=720;
  		@height_wrapper=480;
@@ -17,9 +20,11 @@
  		@font_large=Gosu::Font.new(72,{:name => "Lato Medium"});
  		@font_medium=Gosu::Font.new(45,{:name => "Lato Medium"})
  		@font_small=Gosu::Font.new(36,{:name => "Ubuntu"});
+ 		@font_tiny=Gosu::Font.new(24,{:name => "Ubuntu"});
  		@measuring = false;
  		@counter=0;
  		@val = 0.00;
+ 		@unit_mode=1; # 1 for volts, 2 for amps 
  		needs_cursor=true;
  		super(720,480);
  		self.caption = "Voltmeter test";
@@ -40,6 +45,12 @@
  			@first_draw=1;
  			@counter=0;
  		end
+
+ 		if switch_clicked?
+ 			@unit_mode=3-@unit_mode;
+ 			sleep(0.5);
+ 		end
+
  		if @measuring
  			@redr=true
  			@counter = (@counter + 1)%30;
@@ -60,6 +71,15 @@
  	def stop_clicked?
  		if button_down?(Gosu::MsLeft)
  			if (@msx.between?(489,639) and @msy.between?(110,190))
+ 				return true;
+ 			end
+ 		end
+ 		return false;
+ 	end
+
+ 	def switch_clicked?
+ 		if @measuring and button_down?(Gosu::MsLeft)
+ 			if(@msx.between?(275,465) and @msy.between?(380,415))
  				return true;
  			end
  		end
@@ -89,6 +109,12 @@
  		@font_small.draw("MEASURE",118,132,Zorder::Text,1,1,0xff_000000);
  		draw_rect(489,110,150,80,0xff_AAAAAA,Zorder::Buttons);
  		@font_small.draw("STOP",530,132,Zorder::Text,1,1,0xff_000000);
+ 		#Mode switch button
+ 		if @measuring
+	 		draw_rect(275,380,190,35,0xff_FF889B,Zorder::Buttons);
+	 		@font_tiny.draw("Switch to #{@@unit_mode_strings[2-@unit_mode]}", \
+	 			             304,388,Zorder::Text,1,1,0xff_000000);
+ 		end
 
  		# Voltage reader
  		stopped_str="Press \"Measure\" to start";
@@ -96,12 +122,20 @@
  			@font_medium.draw(stopped_str,210,290,
  				              Zorder::Text,1,1,0xff_00FF44); 		
  		else
+ 			# The final value of "val" is the voltage between ground
+ 			# and one resistor.  Current will be measured at the point
+ 			# at which the analog-in probe is connected to any circuit.
  			if(@counter==0)
  				@val = @ard.analog_read 1;
     			@val = @val * (5.0/1024.0) * 2;
     		end
-    		val_str=sprintf("%.2f",@val);
- 			@font_medium.draw("#{val_str} V",320,290,
+    		if @unit_mode==1 # measuring volts
+    			val_str=sprintf("%.2f",@val) + " V";
+    		elsif @unit_mode==2 # measuring amps
+    			curr=@val/(2*@@single_resistor) * 1000;
+    			val_str=sprintf("%.2f",curr) + " mA";
+    		end
+ 			@font_medium.draw(val_str,320,290,
  				              Zorder::Text,1,1,0xff_00FF44);
  			# sleep(0.5);
  		end
