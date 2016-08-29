@@ -18,3 +18,15 @@ Only the voltmeter has been implemented in Matlab. In order to run it, first mak
 Then, download the files "app\_layout.fig" and "app\_layout.m" from the repository. Make sure they are in your working directory, and run "app\_layout.m". The voltmeter should run automatically. Press "Measure" to start measuring the voltage between the two probes. Remember to connect the negative source to the negative probe and positive to positive!
 
 <h3> Running the Multimeter on Ruby (Linux Recommended) </h3>
+Requirements: Arduino IDE and latest Ruby version should be installed.
+
+1. Install the Firmata gem. Instructions here: http://playground.arduino.cc/Interfacing/Ruby
+2. Next, open Arduino IDE and run the "Standard Firmata" program with the Arduino connected to the computer. 
+3. Install the gosu dependency by running `$ gem install gosu` on command line.
+4. Download the files "connect.rb" and "voltm.rb" from the repository.
+5. To test the arduino connection, run `$ ruby connect.rb`. If successful, the program will confirm the firmata connection and the version. Sometimes, it can take about one minute for a ruby program to actually detect the arduino. If the connection fails, press Ctrl+C to terminate the program, and try again until it connects.
+6. You are ready to run the voltmeter now. Enter `$ ruby voltm.rb` in command line and a window should open up with a "measure" and "stop" button.
+7. Press the "Measure" button to start measuring the voltage between two probes. If you want to measure current through the analog-input wire instead, press the "switch to amps" button below. You can switch between the voltmeter and ammeter at any time.
+
+**Note**: The ammeter calculates the current passing through the point at which the analog-in wire intersects the circuit using the measured voltage. It assumes a voltage divider using two 1.2kΩ resistors. If you use a different resistor value, replace line 12 in voltm.rb that reads ` @@single_resistor = 1200 ` with your own resistance value in Ohms.
+Additionally, by performing this calculation, _the ammeter ignores its own internal impedance_. As a result, the measurement will always be slightly inaccurate.
